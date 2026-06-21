@@ -1,0 +1,14 @@
+{
+  "esquema": "Três fios alternados, 2x por semana cada; domingo livre (ou síntese cross-editorial).",
+  "fios": ["psicologia", "filosofia", "teologia"],
+  "dias": {
+    "seg": "psicologia",
+    "ter": "filosofia",
+    "qua": "teologia",
+    "qui": "psicologia",
+    "sex": "filosofia",
+    "sab": "teologia",
+    "dom": null
+  },
+  "nota": "Cada fio avança seu próprio cursor (estado/mente/<fio>/cursor.json). O dia da semana decide qual fio sai; o cursor decide qual aula."
+}

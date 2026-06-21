@@ -1,0 +1,23 @@
+# Segredos
+.env
+.env.*
+*.key
+*token*
+credentials*.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Node
+node_modules/
+
+# SO / editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# NÃO ignorar: estado/ e edicoes/ são versionados de propósito (memória + saída publicada)

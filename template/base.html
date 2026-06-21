@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<!--
+  base.html — esqueleto FIXO da edição (Diagramador = código, sem LLM).
+  O renderizador (motor/diagramador.py) substitui os tokens do masthead e o
+  conteúdo de cada bloco de slot pela matéria do dia, ou remove a seção se a
+  editoria não sai hoje. Este comentário é retirado na renderização.
+  Convenção detalhada em editorias/README.md. Visual em template/estilo.css.
+-->
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{TITULO_REVISTA}} — {{DATA_EXTENSO}}</title>
+  <link rel="stylesheet" href="../template/estilo.css" />
+</head>
+<body>
+  <main class="revista">
+
+    <header class="masthead">
+      <div class="kicker-revista">Revista pessoal · {{EDICAO_N}}</div>
+      <h1 class="titulo">{{TITULO_REVISTA}}</h1>
+      <p class="tagline">{{TAGLINE}}</p>
+      <div class="meta-edicao">{{DATA_EXTENSO}}</div>
+    </header>
+
+    <nav class="sumario">
+      <h2>Nesta edição</h2>
+      <ol>
+        <li class="e-saude"><span class="ponto"></span><a href="#saude">Saúde</a></li>
+        <li class="e-ia"><span class="ponto"></span><a href="#ia">Inteligência Artificial</a></li>
+        <li class="e-gestao"><span class="ponto"></span><a href="#gestao">Gestão</a></li>
+        <li class="e-vendas"><span class="ponto"></span><a href="#vendas">Marketing &amp; Vendas</a></li>
+        <li class="e-imersao"><span class="ponto"></span><a href="#imersao">Imersão</a></li>
+        <li class="e-mente"><span class="ponto"></span><a href="#mente">Mente</a></li>
+        <li class="e-fitness"><span class="ponto"></span><a href="#fitness">Fitness</a></li>
+        <li class="e-ideias"><span class="ponto"></span><a href="#ideias">Ideias de Negócio</a></li>
+        <li class="e-familia"><span class="ponto"></span><a href="#familia">Família</a></li>
+      </ol>
+    </nav>
+
+    <section class="editoria e-saude" id="saude">
+      <div class="editoria-head">
+        <span class="kicker">Saúde</span>
+        <h2 class="editoria-nome">Saúde</h2>
+        <p class="editoria-desc">O que mudou no oficial e o que aprofunda a prática.</p>
+      </div>
+      <!-- SLOT:saude -->{{SLOT_SAUDE}}<!-- /SLOT -->
+    </section>
+
+    <section class="editoria e-ia" id="ia">
+      <div class="editoria-head">
+        <span class="kicker">Inteligência Artificial</span>
+        <h2 class="editoria-nome">Inteligência Artificial</h2>
+        <p class="editoria-desc">O que mudou nos modelos e como isso vira entrega.</p>
+      </div>
+      <!-- SLOT:ia -->{{SLOT_IA}}<!-- /SLOT -->
+    </section>
+
+    <section class="editoria e-gestao" id="gestao">
+      <div class="editoria-head">
+        <span class="kicker">Gestão</span>
+        <h2 class="editoria-nome">Gestão</h2>
+        <p class="editoria-desc">Um MBA guiado, uma aula por dia.</p>
+      </div>
+      <!-- SLOT:gestao -->{{SLOT_GESTAO}}<!-- /SLOT -->
+    </section>
+
+    <section class="editoria e-vendas" id="vendas">
+      <div class="editoria-head">
+        <span class="kicker">Marketing &amp; Vendas</span>
+        <h2 class="editoria-nome">Marketing &amp; Vendas</h2>
+        <p class="editoria-desc">Aprender a vender — uma aula por vez.</p>
+      </div>
+      <!-- SLOT:vendas -->{{SLOT_VENDAS}}<!-- /SLOT -->
+    </section>
+
+    <section class="editoria e-imersao" id="imersao">
+      <div class="editoria-head">
+        <span class="kicker">Imersão</span>
+        <h2 class="editoria-nome">Imersão</h2>
+        <p class="editoria-desc">Um mergulho profundo por vez. Agora: Teoria dos Jogos.</p>
+      </div>
+      <!-- SLOT:imersao -->{{SLOT_IMERSAO}}<!-- /SLOT -->
+    </section>
+
+    <section class="editoria e-mente" id="mente">
+      <div class="editoria-head">
+        <span class="kicker">Mente</span>
+        <h2 class="editoria-nome">Mente</h2>
+        <p class="editoria-desc">Psicologia, filosofia e teologia em rotação.</p>
+      </div>
+      <!-- SLOT:mente -->{{SLOT_MENTE}}<!-- /SLOT -->
+    </section>
+
+    <section class="editoria e-fitness" id="fitness">
+      <div class="editoria-head">
+        <span class="kicker">Fitness</span>
+        <h2 class="editoria-nome">Fitness</h2>
+        <p class="editoria-desc">Combustível para manter o processo.</p>
+      </div>
+      <!-- SLOT:fitness -->{{SLOT_FITNESS}}<!-- /SLOT -->
+    </section>
+
+    <section class="editoria e-ideias" id="ideias">
+      <div class="editoria-head">
+        <span class="kicker">Ideias de Negócio</span>
+        <h2 class="editoria-nome">Ideias de Negócio</h2>
+        <p class="editoria-desc">Onde o que está mudando vira oportunidade.</p>
+      </div>
+      <!-- SLOT:ideias -->{{SLOT_IDEIAS}}<!-- /SLOT -->
+    </section>
+
+    <section class="editoria e-familia" id="familia">
+      <div class="editoria-head">
+        <span class="kicker">Família</span>
+        <h2 class="editoria-nome">Família</h2>
+        <p class="editoria-desc">Quem o Pedro é em casa — e uma prática para hoje.</p>
+      </div>
+      <!-- SLOT:familia -->{{SLOT_FAMILIA}}<!-- /SLOT -->
+    </section>
+
+    <footer class="rodape">
+      <p>{{TITULO_REVISTA}} · {{EDICAO_N}} · {{DATA_EXTENSO}}</p>
+      <p>Construída para reter, não para consumir.</p>
+    </footer>
+
+  </main>
+</body>
+</html>

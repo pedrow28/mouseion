@@ -1,0 +1,165 @@
+# ============================================================================
+# Configuração das editorias — Revista Diária
+# ----------------------------------------------------------------------------
+# "Editorias são dados, não código" (CLAUDE.md, regra 5). O motor (diagramador,
+# currículo, dedup, QA) LÊ este arquivo. Nunca crave nome de editoria na lógica.
+# Adicionar/remover/reordenar editoria = editar AQUI, não o motor.
+#
+# Campos:
+#   id            slug usado em código, CSS (.e-<id>) e âncoras (#<id>)
+#   nome          rótulo exibido
+#   acento        classe de cor no template (template/estilo.css)
+#   motor         noticia | curriculo | hibrido | sintese | curadoria
+#   cadencia      dias da semana em que a editoria sai  [proposta — decisão #2]
+#   ordem         posição na edição
+#   secoes        blocos internos da editoria
+#   fontes        de onde o Pesquisador coleta (vazio = LLM gera do syllabus)
+#   estado        ponteiros de memória (ledger de dedup ou syllabus+cursor)
+#   regra         regra especial inegociável (se houver)
+#   redator       arquivo do prompt do Redator para esta editoria
+# ============================================================================
+
+versao: 1
+fuso: America/Sao_Paulo
+# Dias válidos em 'cadencia': seg ter qua qui sex sab dom
+
+editorias:
+
+  - id: saude
+    nome: Saúde
+    acento: e-saude
+    motor: hibrido
+    cadencia: [seg, ter, qua, qui, sex, sab, dom]   # proposta: diária
+    ordem: 1
+    secoes: [pulso_oficial, aprofundamento, coletanea]
+    fontes:
+      - { tipo: script, ref: fontes/dou_complete_scraper.py, secao: pulso_oficial }
+      - { tipo: script, ref: fontes/iof_mg_scraper.py,        secao: pulso_oficial }
+      - { tipo: apify, ator: apify/rag-web-browser, secao: coletanea, coletor: "fontes/apify.py:coletar_web" }
+    estado: { ledger: estado/saude/ledger.jsonl }
+    regra: >
+      Acurácia absoluta. Só resume texto efetivamente recuperado, sempre com link
+      da fonte. Nunca inventa, nunca extrapola. Sem texto_recuperado, o item não
+      existe. Alimenta decisões na Fhemig.
+    redator: editorias/redatores/saude.md
+
+  - id: ia
+    nome: Inteligência Artificial
+    acento: e-ia
+    motor: hibrido
+    cadencia: [seg, ter, qua, qui, sex, sab, dom]   # proposta: diária
+    ordem: 2
+    secoes: [pulso_ia, aplicado]
+    fontes:
+      - { tipo: apify, ator: apidojo/tweet-scraper,             secao: pulso_ia, coletor: "fontes/apify.py:coletar_x" }
+      - { tipo: apify, ator: automation-lab/google-news-scraper, secao: pulso_ia, coletor: "fontes/apify.py:coletar_news" }
+    estado: { ledger: estado/ia/ledger.jsonl }
+    regra: >
+      O 'Aplicado' sempre puxa para "como isso vira entrega/produto" (lente Thauma).
+      Notícia segue a mesma disciplina do Saúde: resume recuperado, com link.
+    redator: editorias/redatores/ia.md
+
+  - id: gestao
+    nome: Gestão
+    acento: e-gestao
+    motor: curriculo
+    cadencia: [seg, ter, qua, qui, sex, sab]        # proposta: 1 aula/dia útil
+    ordem: 3
+    secoes: [aula]
+    fontes: []
+    estado: { syllabus: estado/gestao/syllabus.md, cursor: estado/gestao/cursor.json }
+    regra: ""
+    redator: editorias/redatores/curriculo.md
+
+  - id: vendas
+    nome: Marketing & Vendas
+    acento: e-vendas
+    motor: curriculo
+    cadencia: [ter, qui, sab]                       # proposta: 3x/semana
+    ordem: 4
+    secoes: [aula]
+    fontes: []
+    estado: { syllabus: estado/vendas/syllabus.md, cursor: estado/vendas/cursor.json }
+    regra: >
+      Vender serviço B2B consultivo (lente Thauma). Marketing entra a serviço da venda.
+    redator: editorias/redatores/curriculo.md
+
+  - id: imersao
+    nome: Imersão
+    acento: e-imersao
+    motor: curriculo
+    cadencia: [seg, ter, qua, qui, sex, sab]        # proposta: 1 pílula/dia útil
+    ordem: 5
+    secoes: [pilula]
+    fontes: []
+    estado:
+      tema: estado/imersao/tema_atual.json
+      syllabus: estado/imersao/syllabus.md
+      arquivo: estado/imersao/arquivo/
+    regra: >
+      Slot rotativo. Ao zerar o cursor, arquiva a trilha e troca o tema (config).
+    redator: editorias/redatores/curriculo.md
+
+  - id: mente
+    nome: Mente
+    acento: e-mente
+    motor: curriculo
+    cadencia: [seg, ter, qua, qui, sex, sab]        # proposta: fio do dia (dom livre)
+    ordem: 6
+    secoes: [aula]
+    fontes: []
+    estado:
+      rotacao: estado/mente/rotacao.json
+      fios:
+        psicologia: { syllabus: estado/mente/psicologia/syllabus.md, cursor: estado/mente/psicologia/cursor.json }
+        filosofia:  { syllabus: estado/mente/filosofia/syllabus.md,  cursor: estado/mente/filosofia/cursor.json }
+        teologia:   { syllabus: estado/mente/teologia/syllabus.md,   cursor: estado/mente/teologia/cursor.json }
+    regra: >
+      O dia da semana decide o fio (rotacao.json); o cursor do fio decide a aula.
+    redator: editorias/redatores/curriculo.md
+
+  - id: fitness
+    nome: Fitness
+    acento: e-fitness
+    motor: curadoria
+    cadencia: [qua, sab]                            # proposta: 2x/semana
+    ordem: 7
+    secoes: [dose]
+    fontes:
+      - { tipo: web, secao: dose }
+    estado: { ledger: estado/fitness/ledger.jsonl }
+    regra: >
+      Curadoria leve para manter engajamento na recomposição. Não vira curso.
+      Nada de conselho médico; foco em adesão e hábitos consolidados.
+    redator: editorias/redatores/fitness.md
+
+  - id: ideias
+    nome: Ideias de Negócio
+    acento: e-ideias
+    motor: sintese
+    cadencia: [ter, qui]                            # proposta: 2x/semana
+    ordem: 8
+    secoes: [angulos]
+    fontes:
+      - { tipo: apify, ator: apidojo/tweet-scraper,       coletor: "fontes/apify.py:coletar_x" }
+      - { tipo: apify, ator: automation-lab/reddit-scraper, coletor: "fontes/apify.py:coletar_reddit" }
+      - { tipo: interno, ref: "coleta de IA + Saúde do dia" }
+    estado: { ledger: estado/ideias/ledger.jsonl }
+    regra: >
+      Saída são 1–3 ângulos ACIONÁVEIS, com a lente "onde a Thauma pode jogar".
+      Nunca notícia genérica; sempre aterrissa em ação.
+    redator: editorias/redatores/ideias.md
+
+  - id: familia
+    nome: Família
+    acento: e-familia
+    motor: curriculo
+    cadencia: [seg, qua, sex]                       # proposta: 3x/semana
+    ordem: 9
+    secoes: [licao]
+    fontes: []
+    estado: { syllabus: estado/familia/syllabus.md, cursor: estado/familia/cursor.json }
+    regra: >
+      Aplicação > teoria. O beat de Recordação vira micro-prática; toda lição fecha
+      com uma ação concreta para hoje.
+    redator: editorias/redatores/curriculo.md

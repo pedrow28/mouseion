@@ -1,0 +1,14 @@
+# Queries de "Para aprofundar" por editoria.
+# O coletor `coletar_aprofundamento` (fontes/apify.py) usa estas buscas no Apify
+# (rag-web-browser) para trazer 2–3 artigos de desenvolvimento por editoria.
+# Mantenha as queries curtas e "googláveis" — queries longas voltam vazias.
+
+gestao:  "princípios de gestão e liderança"
+vendas:  "vendas consultivas B2B SPIN selling"
+saude:   "gestão hospitalar eficiência"
+ia:      "guia de agentes de IA LLM"
+imersao: "teoria dos jogos conceitos"          # acompanhe o tema atual da Imersão
+mente:   "psicologia analítica Jung sombra"    # acompanhe o fio do dia
+fitness: "recomposição corporal treino força"
+ideias:  "modelo de negócio com inteligência artificial"
+familia: "paternidade disciplina positiva"
