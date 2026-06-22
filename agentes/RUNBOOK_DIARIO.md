@@ -31,7 +31,9 @@
 - Atualize `index.html` (adicione a edição no topo da lista).
 - **QA** (`motor/qa.py`): editoria vazia? link quebrado? cursor avançou? Se reprovar, **não
   publica** — registra o motivo.
-- `git add . && git commit -m "Edição AAAA-MM-DD" && git push`.
+- **Publica direto na `main`** (é de lá que o GitHub Pages serve):
+  `git add -A && git commit -m "Edição AAAA-MM-DD" && git push origin HEAD:main`. Sem PR.
+- Roda sozinho todo dia pela **Rotina** (ver `agentes/ROTINA_DIARIA.md`).
 
 ## 4. Regras de ouro (inegociáveis)
 - **Saúde:** só resume texto efetivamente recuperado, sempre com link. Nunca inventa.
