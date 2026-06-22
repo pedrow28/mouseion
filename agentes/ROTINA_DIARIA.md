@@ -70,6 +70,16 @@ reconcilie antes de gerar para não repetir.
 - **Coleta de notícia:** feita pelo **conector Apify** (MCP). Em **Trusted** o tráfego do
   conector já passa — não precisa liberar domínio. Garanta que o conector Apify está conectado
   na sua conta (claude.ai → Settings → Connectors) e incluído na rotina.
+- **Pulso oficial do Saúde (DOU/IOF) — exige config de ambiente.** Os coletores
+  `fontes/iof_mg_scraper.py` (IOF-MG) e `fontes/dou_complete_scraper.py` (DOU) batem em APIs
+  oficiais que **não estão na allowlist Trusted**. Sem liberar, voltam `403 host_not_allowed`
+  e o Pulso oficial não entra. No environment (o mesmo que a Rotina usa):
+  - **Network access → Custom → Allowed domains** (mantendo os registries padrão):
+    `www.jornalminasgerais.mg.gov.br` (IOF-MG) e `www.in.gov.br` (DOU).
+  - **Setup script** (para as deps persistirem):
+    `pip install pypdf cffi requests python-dotenv` — e, só se quiser o DOU,
+    `pip install playwright && playwright install --with-deps chromium` (o DOU usa navegador).
+  - O IOF é leve (API pública + openssl + pypdf); o DOU é pesado por causa do navegador.
 - **`fontes/apify.py` (REST, opcional):** se um dia quiser usar o coletor REST em vez do
   conector, defina `APIFY_TOKEN` como variável de ambiente do environment (formato `.env`,
   sem aspas). Hoje a revista funciona bem só com o conector.
